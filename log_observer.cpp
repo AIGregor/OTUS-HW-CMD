@@ -2,13 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-void log_observer::update(cmdBulk* bulk)
-{
-	std::string fileName = "bulk" + bulk->getTimeStart() + ".log";
-
-	saveLog(fileName, bulk->getBulk());
-}
-
 void log_observer::saveLog(std::string fileName, std::vector<std::string>& bulk)
 {	
 	int size = bulk.size();	
@@ -29,6 +22,13 @@ void log_observer::saveLog(std::string fileName, std::vector<std::string>& bulk)
 				out << std::endl;
 		}
 	}
+}
+
+void log_observer::update(cmdBulk* bulk)
+{
+	std::string fileName = "bulk" + bulk->getTimeStart() + ".log";
+
+	saveLog(fileName, bulk->getBulk());
 }
 
 void consol_observer::update(cmdBulk* bulk)
