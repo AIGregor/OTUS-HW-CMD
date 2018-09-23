@@ -38,7 +38,7 @@ void cmdBulk::addCMD(std::string cmd)
 	}
 
 	if (cmdPack.size() == 0)
-		bulkTimeStart = clock();
+		bulkTimeStart = time(NULL);
 
 	cmdPack.push_back(cmd);
 

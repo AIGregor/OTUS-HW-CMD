@@ -29,6 +29,4 @@ public:
 	void update(cmdBulk* bulk);
 private:
 	void printToConsol(const std::vector<std::string>& bulk);
-
 };
-
