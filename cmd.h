@@ -12,7 +12,7 @@ public:
 	cmdBulk(size_t bulkStandartSize);
 
 	void addCMD(std::string cmd);
-	std::vector<std::string> getBulk() { 
+	std::vector<std::string>& getBulk() { 
 		return cmdPack; 
 	};
 	auto getTimeStart() { 
