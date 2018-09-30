@@ -5,6 +5,11 @@
 
 class Observer;
 
+enum ERROR_CODES {
+	ERROR_NOT_ONE_COMMAND_IN_LINE,
+	SUCCESS
+};
+
 class cmdBulk
 {
 public:
@@ -31,4 +36,7 @@ private:
 	unsigned int bulkTimeStart;
 	size_t bulkSize;
 	int startBulkCounter;
+
+private:
+	size_t commandParsing(std::string& cmd, std::string& dynBulk);
 };
