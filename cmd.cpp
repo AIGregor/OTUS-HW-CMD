@@ -17,13 +17,21 @@ cmdBulk::cmdBulk(size_t bulkStandartSize) :
 {
 }
 
+void cmdBulk::add(std::string cmd)
+{
+	// split input line and add to bulk
+	size_t result = parse(cmd);
+	
+	if (result != ERROR_CODES::SUCCESS)
+	{
+		notify(result);
+	}
+}
+
 void cmdBulk::addCMD(std::string cmd)
 {
 	if (cmd.empty())
 		return;
-
-	std::string bulk;
-	size_t res = commandParsing(cmd, bulk);
 
 	if (cmd.compare("{") == 0)
 	{	
@@ -56,64 +64,74 @@ void cmdBulk::addCMD(std::string cmd)
 	}
 }
 
-size_t cmdBulk::commandParsing(std::string& cmd, std::string& dynBulk)
+size_t cmdBulk::parse(std::string& cmd)
 {	
-	std::stringstream ss(cmd);
-	std::istream_iterator<std::string> begin(ss);
-	std::istream_iterator<std::string> end;
+	// Split by space	
+	std::istringstream iss(cmd);
+	std::vector<std::string> line_parts{ std::istream_iterator<std::string>{iss},
+		std::istream_iterator<std::string>{} };
 
-	std::vector<std::string> line_parts(begin, end);
-	std::copy(line_parts.begin(), line_parts.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
+	//std::stringstream ss(cmd);
+	//std::istream_iterator<std::string> begin(ss);
+	//std::istream_iterator<std::string> end;
+	//
+	//std::vector<std::string> line_parts(begin, end);
+	//std::copy(line_parts.begin(), line_parts.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
 
+	// Only one command in line for case { cmd1 }
+	// In other case looking each part
 	if (line_parts.size() > 3) {
 		return ERROR_CODES::ERROR_NOT_ONE_COMMAND_IN_LINE;
 	}
 
 	size_t cmdCounter = 0;
-	for (auto& str : line_parts) {
-		// Case - {cmd1 cmd2}
-		if (cmdCounter > 1) {
-			return ERROR_CODES::ERROR_NOT_ONE_COMMAND_IN_LINE;
-		}
-		
-		// Case - comand1 {cmd1}
-		size_t startBulk_pos;
-		size_t endBulk_pos;
+	for (auto& str : line_parts)
+	{
+		// Case - {cmd1} or cmd1{}cmd2 or cmd1{cmd2} 
+		// Case - {}cmd or cmd{} or {cmd1}cmd2
+		// Case - }cmd{ or cmd1}{ or }{cmd1
+		// Case - cmd{ or {cmd or cmd1{cmd2
 
-		startBulk_pos = str.find("{");
-		endBulk_pos = str.find("}");
+		bool startBulk = false;
+		bool endBulk = false;
 
-		// Case {cmd}
-		if (startBulk_pos != std::string::npos &&
-			endBulk_pos != std::string::npos) 
+		if (str.compare("{") == 0 ||
+			str.compare("}") == 0)
 		{
-			cmdCounter = 1;
-			str.erase(startBulk_pos, 1);
-			str.erase(endBulk_pos, 1);
-			cmd = str;
-		}
-		
-		// Get start bulk if it was find
-		if (startBulk_pos != std::string::npos) {
-			dynBulk = cmd.substr(startBulk_pos);
-			cmd.erase(startBulk_pos);
+			addCMD(str);
+			continue;
 		}
 
-		// Get end bulk if it was find
-		if (endBulk_pos != std::string::npos) {
-			dynBulk = cmd.substr(endBulk_pos);
-			cmd.erase(endBulk_pos);
+		for (size_t i = 0; i < str.size(); ++i)
+		{
+			if (str[i] == '{')
+			{
+				str.replace(i, 1, " { ");
+				startBulk = true;
+				++i;
+			}
+			else if (str[i] == '}')
+			{
+				str.replace(i, 1, " } ");
+				endBulk = true;
+				++i;
+			}
 		}
 
-		// Case command{command or command}command
-		if (dynBulk.size() > 1) {
-			return ERROR_CODES::ERROR_NOT_ONE_COMMAND_IN_LINE;
+		// In one line { or } and command 
+		if (endBulk || startBulk)
+		{
+			// split again
+			size_t res = parse(str);
+			if (res != ERROR_CODES::SUCCESS)
+				return res;
+		}
+		else
+		{
+			addCMD(str);
 		}
 	}
-	
-	// Delete all space symbols
-	//dynBulk.erase(std::remove_if(dynBulk.begin(), dynBulk.end(), isspace), dynBulk.end());
-	
+
 	return ERROR_CODES::SUCCESS;
 }
 
@@ -122,9 +140,9 @@ void cmdBulk::sibscribe(Observer * obs)
 	subs.push_back(obs);
 }
 
-void cmdBulk::notify()
+void cmdBulk::notify(size_t errorCode /*= ERROR_CODES::SUCCESS*/)
 {
 	for (auto s : subs) {
-		s->update(this);
+		s->update(this, errorCode);
 	}
 }

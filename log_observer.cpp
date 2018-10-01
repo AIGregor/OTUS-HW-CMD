@@ -24,16 +24,41 @@ void log_observer::saveLog(std::string fileName, std::vector<std::string>& bulk)
 	}
 }
 
-void log_observer::update(cmdBulk* bulk)
+void log_observer::saveLog(std::string fileName, size_t errorCode)
 {
-	std::string fileName = "bulk" + bulk->getTimeStart() + ".log";
+	std::ofstream out;
 
-	saveLog(fileName, bulk->getBulk());
+	out.open(fileName);
+	if (out.is_open())
+	{
+		out << ERROR_MESSAGES[errorCode] << std::endl;
+	}
 }
 
-void consol_observer::update(cmdBulk* bulk)
+void log_observer::update(cmdBulk* bulk, size_t errorCode)
 {
-	printToConsol(bulk->getBulk());
+	std::string fileName = "bulk" + bulk->getTimeStart() + ".log";
+	if (errorCode == ERROR_CODES::SUCCESS)
+	{
+		saveLog(fileName, bulk->getBulk());
+	}
+	else
+	{
+		saveLog(fileName, errorCode);
+	}
+	
+}
+
+void consol_observer::update(cmdBulk* bulk, size_t errorCode)
+{
+	if (errorCode == ERROR_CODES::SUCCESS)
+	{
+		printToConsol(bulk->getBulk());
+	}	
+	else
+	{
+		printToConsol(errorCode);
+	}
 }
 
 void consol_observer::printToConsol(const std::vector<std::string>& bulk)
@@ -50,4 +75,9 @@ void consol_observer::printToConsol(const std::vector<std::string>& bulk)
 		i < (size - 1) ? std::cout << ", " : 
 						std::cout << std::endl;
 	}
+}
+
+void consol_observer::printToConsol(size_t errorCode)
+{
+	std::cout << ERROR_MESSAGES[errorCode] << std::endl;
 }

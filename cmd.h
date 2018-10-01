@@ -5,9 +5,16 @@
 
 class Observer;
 
-enum ERROR_CODES {
+enum ERROR_CODES {	
+	ERROR_ARGUMENT_LIST,
 	ERROR_NOT_ONE_COMMAND_IN_LINE,
 	SUCCESS
+};
+
+static const std::string ERROR_MESSAGES[2] = 
+{
+	"There is no arguments list.",
+	"ERROR. Only one command in line."
 };
 
 class cmdBulk
@@ -16,7 +23,8 @@ public:
 	cmdBulk();
 	cmdBulk(size_t bulkStandartSize);
 
-	void addCMD(std::string cmd);
+	void add(std::string cmd);
+
 	std::vector<std::string>& getBulk() { 
 		return cmdPack; 
 	};
@@ -28,7 +36,7 @@ public:
 	};
 
 	void sibscribe(Observer* obs);
-	void notify();
+	void notify(size_t errorCode = ERROR_CODES::SUCCESS);
 private:
 	std::vector<std::string> cmdPack;
 	std::vector<Observer*> subs;
@@ -38,5 +46,6 @@ private:
 	int startBulkCounter;
 
 private:
-	size_t commandParsing(std::string& cmd, std::string& dynBulk);
+	void addCMD(std::string cmd);
+	size_t parse(std::string& cmd);
 };
