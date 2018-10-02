@@ -37,6 +37,7 @@ public:
 
 	void sibscribe(Observer* obs);
 	void notify(size_t errorCode = ERROR_CODES::SUCCESS);
+
 private:
 	std::vector<std::string> cmdPack;
 	std::vector<Observer*> subs;

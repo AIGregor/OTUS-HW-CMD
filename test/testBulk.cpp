@@ -1,78 +1,98 @@
 // testMatrix.cpp : Defines the entry point for the console application.
 //
+#include <fstream>
 #include "gtest/gtest.h"
-#include "Matrix.h"
 
-class CMatrixTest : public ::testing::Test {
-};
+#include "log_observer.h"
+#include "cmd.h"
 
-TEST_F(CMatrixTest, CheckSize)
+//std::string GetActualResult(size_t test_number, int test_bulk_size);
+//std::string GetExpectedResult(size_t test_number);
+
+//class CBulkTest : public ::testing::Test {
+//};
+
+std::string GetActualResult(size_t test_number, int test_bulk_size)
 {
-	Matrix<int, -1> matrix;
-	ASSERT_TRUE(matrix.size() == 0);
-}
+	std::ifstream file_in("in_test" + std::to_string(test_number) + ".txt", std::ofstream::in);
 
-TEST_F(CMatrixTest, CheckAddValue)
-{
-	Matrix<int, -1> matrix;
-	matrix[100][100] = 314;
+	testing::internal::CaptureStdout();
 
-	ASSERT_TRUE(matrix[100][100] == 314);
-	ASSERT_TRUE(matrix.size() == 1);
+	cmdBulk bulker(test_bulk_size);
+	log_observer log(&bulker);
+	consol_observer consl(&bulker);
 
-	matrix[100][10] = 457;
-
-	ASSERT_TRUE(matrix[100][10] == 457);
-	ASSERT_TRUE(matrix.size() == 2);	
-}
-
-TEST_F(CMatrixTest, CheckRemoveValue)
-{
-	Matrix<int, -1> matrix;
-	matrix[100][100] = 314;
-
-	ASSERT_TRUE(matrix[100][100] == 314);
-	ASSERT_TRUE(matrix.size() == 1);
-
-	matrix[100][10] = 457;
-
-	ASSERT_TRUE(matrix[100][10] == 457);
-	ASSERT_TRUE(matrix.size() == 2);
-
-	matrix[100][10] = -1;
-
-	ASSERT_TRUE(matrix[100][10] == -1);
-	ASSERT_TRUE(matrix.size() == 1);
-}
-
-TEST_F(CMatrixTest, CheckFullCells)
-{
-	Matrix<int, -1> matrix; 
-	matrix[100][100] = 314;
-
-	ASSERT_TRUE(matrix[100][100] == 314);
-	ASSERT_TRUE(matrix.size() == 1);
-
-	for (auto c : matrix)
+	while (!file_in.eof())
 	{
-		std::string strTest = "";
+		std::string line;
+		getline(file_in, line);
 
-		int x = c.first;
-		for (auto e : c.second)
-		{
-			int y = e.first;
-			int v = e.second.getValue();
-			strTest = std::to_string(x) 
-				+ std::to_string(y)
-				+ std::to_string(v);
-			ASSERT_TRUE(strTest == "100100314");
-		}
+		bulker.add(line);
 	}
 
+	if (!bulker.isDynamicSizeBulk())
+		bulker.notify();
+
+	std::string output = testing::internal::GetCapturedStdout();
+	return output;
 }
+
+std::string GetExpectedResult(size_t test_number)
+{
+	std::string file_out = "out_test" + std::to_string(test_number) + ".txt";
+
+	std::ifstream t(file_out);
+	std::string result((std::istreambuf_iterator<char>(t)),
+		std::istreambuf_iterator<char>());
+
+	return result;
+}
+
+// ASSERT_EQ(expected, actual);
+TEST(CBulkTest, BulkTest1)
+{
+	std::string expected = GetExpectedResult(1);
+	std::string actual = GetActualResult(1, 3);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest2)
+{
+	std::string expected = GetExpectedResult(2);
+	std::string actual = GetActualResult(2, 3);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest3)
+{
+	std::string expected = GetExpectedResult(3);
+	std::string actual = GetActualResult(3, 3);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest4)
+{
+	std::string expected = GetExpectedResult(4);
+	std::string actual = GetActualResult(4, 3);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest5)
+{
+	std::string expected = GetExpectedResult(5);
+	std::string actual = GetActualResult(5, 3);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest6)
+{
+	std::string expected = GetExpectedResult(6);
+	std::string actual = GetActualResult(6, 3);
+	ASSERT_EQ(expected, actual);
+}
+
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
-
