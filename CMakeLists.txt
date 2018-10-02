@@ -1,17 +1,23 @@
 cmake_minimum_required(VERSION 3.2)
 
 if (DEFINED ENV{TRAVIS_BUILD_NUMBER})
-   project(bulk VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
+   project(hw_bulk VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 else()
-   project(bulk VERSION 0.0.1)
+   project(hw_bulk VERSION 0.0.1)
 endif()
 
-add_executable(bulk_cli main.cpp log_observer.cpp cmd.cpp 
-									log_observer.h cmd.h)
+set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+
+file(GLOB HEADER_FILES	${INCLUDE_DIR}/*.h)
+file(GLOB SRC_FILES		${SRC_DIR}/*.cpp)
+
+add_executable(bulk_cli ${HEADER_FILES} ${SRC_FILES})
 
 set_target_properties(bulk_cli PROPERTIES
   CXX_STANDARD 14
-  CXX_STANDARD_REQUIRED ON  
+  CXX_STANDARD_REQUIRED ON 
+  INCLUDE_DIRECTORIES ${INCLUDE_DIR} 
 )
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
@@ -19,7 +25,10 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 else()
 	set_target_properties(bulk_cli PROPERTIES COMPILE_OPTIONS -Wpedantic -Wall -Wextra)
 endif()
-									
+			
+enable_testing()
+add_subdirectory(test)
+			
 install(TARGETS bulk_cli RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
