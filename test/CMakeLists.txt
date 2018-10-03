@@ -13,20 +13,20 @@ endif()
 
 find_package(GTest REQUIRED)
 
-configure_file(in_test1.txt in_test1.txt COPYONLY)
-configure_file(in_test2.txt in_test2.txt COPYONLY)
-configure_file(in_test3.txt in_test3.txt COPYONLY)
-configure_file(in_test4.txt in_test4.txt COPYONLY)
-configure_file(in_test5.txt in_test5.txt COPYONLY)
-configure_file(in_test6.txt in_test6.txt COPYONLY)
-configure_file(out_test1.txt out_test1.txt COPYONLY)
-configure_file(out_test2.txt out_test2.txt COPYONLY)
-configure_file(out_test3.txt out_test3.txt COPYONLY)
-configure_file(out_test4.txt out_test4.txt COPYONLY)
-configure_file(out_test5.txt out_test5.txt COPYONLY)
-configure_file(out_test6.txt out_test6.txt COPYONLY)
+#configure_file(in_test1.txt in_test1.txt COPYONLY)
+#configure_file(in_test2.txt in_test2.txt COPYONLY)
+#configure_file(in_test3.txt in_test3.txt COPYONLY)
+#configure_file(in_test4.txt in_test4.txt COPYONLY)
+#configure_file(in_test5.txt in_test5.txt COPYONLY)
+#configure_file(in_test6.txt in_test6.txt COPYONLY)
+#configure_file(out_test1.txt out_test1.txt COPYONLY)
+#configure_file(out_test2.txt out_test2.txt COPYONLY)
+#configure_file(out_test3.txt out_test3.txt COPYONLY)
+#configure_file(out_test4.txt out_test4.txt COPYONLY)
+#configure_file(out_test5.txt out_test5.txt COPYONLY)
+#configure_file(out_test6.txt out_test6.txt COPYONLY)
 
-add_executable(bulk_test_cli testBulk.cpp ${HEADER_FILES} ${SRC_FILES})
+add_executable(bulk_test_cli testBulk.cpp ${HEADER_FILES} ../src/log_observer.cpp ../src/cmd.cpp)
 
 set_target_properties(bulk_test_cli PROPERTIES
 INCLUDE_DIRECTORIES "${GTEST_INCLUDE_DIRS};${INCLUDE_DIR}"

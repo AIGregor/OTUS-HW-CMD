@@ -7,7 +7,7 @@ else()
 endif()
 
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+set(GLOB SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 file(GLOB HEADER_FILES	${INCLUDE_DIR}/*.h)
 file(GLOB SRC_FILES		${SRC_DIR}/*.cpp)

@@ -53,35 +53,35 @@ TEST(CBulkTest, BulkTest1)
 {
 	std::string expected = GetExpectedResult(1);
 	std::string actual = GetActualResult(1, 3);
-	ASSERT_EQ(expected, actual);
+	EXPECT_EQ(expected, actual);
 }
 
 TEST(CBulkTest, BulkTest2)
 {
 	std::string expected = GetExpectedResult(2);
 	std::string actual = GetActualResult(2, 3);
-	ASSERT_EQ(expected, actual);
+	EXPECT_EQ(expected, actual);
 }
 
 TEST(CBulkTest, BulkTest3)
 {
 	std::string expected = GetExpectedResult(3);
 	std::string actual = GetActualResult(3, 3);
-	ASSERT_EQ(expected, actual);
+	EXPECT_EQ(expected, actual);
 }
 
 TEST(CBulkTest, BulkTest4)
 {
 	std::string expected = GetExpectedResult(4);
 	std::string actual = GetActualResult(4, 3);
-	ASSERT_EQ(expected, actual);
+	EXPECT_EQ(expected, actual);
 }
 
 TEST(CBulkTest, BulkTest5)
 {
 	std::string expected = GetExpectedResult(5);
 	std::string actual = GetActualResult(5, 3);
-	ASSERT_EQ(expected, actual);
+	EXPECT_EQ(expected, actual);
 }
 
 TEST(CBulkTest, BulkTest6)
