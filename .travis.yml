@@ -1,10 +1,28 @@
 language: cpp
-script:
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
+before_script:
+  - export CXX=/usr/bin/g++-7
+  - export CC=/usr/bin/gcc-7
+
+  - sudo apt-get install libgtest-dev cmake -y
+
+  - cd /usr/src/gtest
+  - sudo cmake .
+  - sudo make
+  - sudo cp *.a /usr/lib
+  - cd "${TRAVIS_BUILD_DIR}"
+script: 
   - cmake .
   - cmake --build .
-  - cmake --build . --target package
+  - cmake --build . --target test
+  - cmake --build . --target package 
 deploy:
   provider: script
   skip_cleanup: true
   script:
-  - curl -T bulk-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uaigregor:$BINTRAY_API_KEY "https://api.bintray.com/content/aigregor/OTUS-HW_CMD/bulk/$TRAVIS_BUILD_NUMBER/bulk-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"  
+  - curl -T bulk-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uaigregor:$BINTRAY_API_KEY "https://api.bintray.com/content/aigregor/OTUS-HW_CMD/bulk/$TRAVIS_BUILD_NUMBER/bulk-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
