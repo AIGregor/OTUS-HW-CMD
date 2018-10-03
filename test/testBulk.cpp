@@ -9,8 +9,8 @@
 //std::string GetActualResult(size_t test_number, int test_bulk_size);
 //std::string GetExpectedResult(size_t test_number);
 
-//class CBulkTest : public ::testing::Test {
-//};
+class CBulkTest : public ::testing::Test {
+};
 
 std::string GetActualResult(size_t test_number, int test_bulk_size)
 {
@@ -21,12 +21,10 @@ std::string GetActualResult(size_t test_number, int test_bulk_size)
 	cmdBulk bulker(test_bulk_size);
 	log_observer log(&bulker);
 	consol_observer consl(&bulker);
-
-	while (!file_in.eof())
+	
+	std::string line;
+	while (getline(file_in, line))
 	{
-		std::string line;
-		getline(file_in, line);
-
 		bulker.add(line);
 	}
 
