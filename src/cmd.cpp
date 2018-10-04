@@ -35,7 +35,10 @@ void cmdBulk::addCMD(std::string cmd)
 
 	if (cmd.compare("{") == 0)
 	{	
-		++startBulkCounter;		
+		++startBulkCounter;
+		if (startBulkCounter == 1) {
+			cmdPack.clear();
+		}
 		return;
 	}
 	else if (cmd.compare("}") == 0)

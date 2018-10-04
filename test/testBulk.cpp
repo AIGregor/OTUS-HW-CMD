@@ -89,6 +89,19 @@ TEST(CBulkTest, BulkTest6)
 	ASSERT_EQ(expected, actual);
 }
 
+TEST(CBulkTest, BulkTest7)
+{
+	std::string expected = GetExpectedResult(7);
+	std::string actual = GetActualResult(7, 2);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest8)
+{
+	std::string expected = GetExpectedResult(8);
+	std::string actual = GetActualResult(8, 2);
+	ASSERT_EQ(expected, actual);
+}
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
