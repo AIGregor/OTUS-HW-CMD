@@ -8,13 +8,15 @@ class Observer;
 enum ERROR_CODES {	
 	ERROR_ARGUMENT_LIST,
 	ERROR_NOT_ONE_COMMAND_IN_LINE,
+	ERROR_THERE_IS_NO_OPENING_BRACKET,
 	SUCCESS
 };
 
-static const std::string ERROR_MESSAGES[2] = 
+static const std::string ERROR_MESSAGES[3] = 
 {
 	"There is no arguments list.",
-	"ERROR. Only one command in line."
+	"ERROR. Only one command in line.",
+	"ERROR. There is no any opening brackets."
 };
 
 class cmdBulk
@@ -23,7 +25,7 @@ public:
 	cmdBulk();
 	cmdBulk(size_t bulkStandartSize);
 
-	void add(std::string cmd);
+	void add(std::string& cmd);
 
 	std::vector<std::string>& getBulk() { 
 		return cmdPack; 
@@ -47,6 +49,6 @@ private:
 	int startBulkCounter;
 
 private:
-	void addCMD(std::string cmd);
+	size_t addCMD(std::string& cmd);
 	size_t parse(std::string& cmd);
 };

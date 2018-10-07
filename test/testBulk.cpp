@@ -6,9 +6,6 @@
 #include "log_observer.h"
 #include "cmd.h"
 
-//std::string GetActualResult(size_t test_number, int test_bulk_size);
-//std::string GetExpectedResult(size_t test_number);
-
 class CBulkTest : public ::testing::Test {
 };
 
@@ -100,6 +97,27 @@ TEST(CBulkTest, BulkTest8)
 {
 	std::string expected = GetExpectedResult(8);
 	std::string actual = GetActualResult(8, 2);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest9)
+{
+	std::string expected = GetExpectedResult(9);
+	std::string actual = GetActualResult(9, 2);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest10)
+{
+	std::string expected = GetExpectedResult(10);
+	std::string actual = GetActualResult(10, 2);
+	ASSERT_EQ(expected, actual);
+}
+
+TEST(CBulkTest, BulkTest11)
+{
+	std::string expected = GetExpectedResult(11);
+	std::string actual = GetActualResult(11, 2);
 	ASSERT_EQ(expected, actual);
 }
 

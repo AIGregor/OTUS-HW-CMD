@@ -1,0 +1,4 @@
+bulk: 1, 2
+bulk: 4
+bulk: 3
+ERROR. There is no any opening brackets.
