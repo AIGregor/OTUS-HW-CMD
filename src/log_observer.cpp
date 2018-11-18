@@ -35,35 +35,24 @@ void log_observer::saveLog(std::string fileName, size_t errorCode)
 	}
 }
 
-void log_observer::update(cmdBulk* bulk, size_t errorCode)
+void log_observer::update(cmdBulk& bulk, size_t errorCode)
 {
-	std::string fileName = "bulk" + bulk->getTimeStart() + ".log";
-	if (errorCode == ERROR_CODES::SUCCESS)
-	{
-		saveLog(fileName, bulk->getBulk());
-	}
-	else
-	{
-		saveLog(fileName, errorCode);
-	}
+	std::string fileName = "bulk" + bulk.getTimeStart() + ".log";
 	
+	errorCode == ERROR_CODES::SUCCESS ? 
+		saveLog(fileName, bulk.getBulk()) :
+		saveLog(fileName, errorCode);		
 }
 
-void consol_observer::update(cmdBulk* bulk, size_t errorCode)
+void consol_observer::update(cmdBulk& bulk, size_t errorCode)
 {
-	if (errorCode == ERROR_CODES::SUCCESS)
-	{
-		printToConsol(bulk->getBulk());
-	}	
-	else
-	{
+	errorCode == ERROR_CODES::SUCCESS ?
+		printToConsol(bulk.getBulk()) :
 		printToConsol(errorCode);
-	}
 }
 
 void consol_observer::printToConsol(const std::vector<std::string>& bulk)
 {
-	// TODO вывести в консоль
 	int size = bulk.size();
 	if (size <= 0)
 		return;

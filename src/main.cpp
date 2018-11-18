@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 	long bulkSize = atol(argv[1]);
 
 	cmdBulk cmdBulk(bulkSize);
-	log_observer log(&cmdBulk);
-	consol_observer consl(&cmdBulk);
+	log_observer log(cmdBulk);
+	consol_observer consl(cmdBulk);
 
 	while (cin)
 	{

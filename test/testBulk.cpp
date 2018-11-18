@@ -16,8 +16,8 @@ std::string GetActualResult(size_t test_number, int test_bulk_size)
 	testing::internal::CaptureStdout();
 
 	cmdBulk bulker(test_bulk_size);
-	log_observer log(&bulker);
-	consol_observer consl(&bulker);
+	log_observer log(bulker);
+	consol_observer consl(bulker);
 	
 	std::string line;
 	while (getline(file_in, line))

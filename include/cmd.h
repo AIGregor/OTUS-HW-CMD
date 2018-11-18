@@ -9,7 +9,8 @@ enum ERROR_CODES {
 	ERROR_ARGUMENT_LIST,
 	ERROR_NOT_ONE_COMMAND_IN_LINE,
 	ERROR_THERE_IS_NO_OPENING_BRACKET,
-	SUCCESS
+	SUCCESS,
+	COMMAND
 };
 
 static const std::string ERROR_MESSAGES[3] = 
@@ -37,6 +38,8 @@ public:
 		return startBulkCounter > 0; 
 	};
 
+	size_t checkDynamicSizeBulk(const std::string& bracket);
+
 	void sibscribe(Observer* obs);
 	void notify(size_t errorCode = ERROR_CODES::SUCCESS);
 
@@ -47,8 +50,8 @@ private:
 	unsigned int bulkTimeStart;
 	size_t bulkSize;
 	int startBulkCounter;
-
+	bool hasCommand;
 private:
-	size_t addCMD(std::string& cmd);
+	size_t addCMD(const std::string& cmd);
 	size_t parse(std::string& cmd);
 };
