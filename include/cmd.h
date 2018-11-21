@@ -5,12 +5,14 @@
 
 class Observer;
 
-enum ERROR_CODES {	
+enum CODES {	
 	ERROR_ARGUMENT_LIST,
 	ERROR_NOT_ONE_COMMAND_IN_LINE,
 	ERROR_THERE_IS_NO_OPENING_BRACKET,
 	SUCCESS,
-	COMMAND
+	COMMAND,
+	START_BRACKET,
+	END_BRACKET
 };
 
 static const std::string ERROR_MESSAGES[3] = 
@@ -41,7 +43,7 @@ public:
 	size_t checkDynamicSizeBulk(const std::string& bracket);
 
 	void sibscribe(Observer* obs);
-	void notify(size_t errorCode = ERROR_CODES::SUCCESS);
+	void notify(size_t errorCode = CODES::SUCCESS);
 
 private:
 	std::vector<std::string> cmdPack;

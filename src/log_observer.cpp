@@ -39,14 +39,14 @@ void log_observer::update(cmdBulk& bulk, size_t errorCode)
 {
 	std::string fileName = "bulk" + bulk.getTimeStart() + ".log";
 	
-	errorCode == ERROR_CODES::SUCCESS ? 
+	errorCode == CODES::SUCCESS ? 
 		saveLog(fileName, bulk.getBulk()) :
 		saveLog(fileName, errorCode);		
 }
 
 void consol_observer::update(cmdBulk& bulk, size_t errorCode)
 {
-	errorCode == ERROR_CODES::SUCCESS ?
+	errorCode == CODES::SUCCESS ?
 		printToConsol(bulk.getBulk()) :
 		printToConsol(errorCode);
 }

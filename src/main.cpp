@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	// Argument is necessary
 	if (argc < 2)
 	{
-		cout << ERROR_MESSAGES[ERROR_CODES::ERROR_ARGUMENT_LIST];
+		cout << ERROR_MESSAGES[CODES::ERROR_ARGUMENT_LIST];
 		return 0;
 	}		
 
