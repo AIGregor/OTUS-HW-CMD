@@ -54,10 +54,6 @@ size_t cmdBulk::parse(std::string& cmd)
 	std::vector<std::string> line_parts{ std::istream_iterator<std::string>{iss},
 		std::istream_iterator<std::string>{} };
 
-	// Only one command in line for case { cmd1 }
-	// In other case looking each part
-	std::vector<std::string> cmd_parts;
-
 	int iLocalBulkCounter, iCmdCounter;
 	iLocalBulkCounter = iCmdCounter = 0;
 
